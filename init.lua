@@ -21,6 +21,7 @@ local opts = {}
 require("lazy").setup("plugins")
 
 
+
 require("catppuccin").setup({
 	transparent_background = true
 })
