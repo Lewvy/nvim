@@ -1,6 +1,10 @@
 {
     "diagnostics.globals": [
         "vim",
-        "cmp"
+        "cmp",
+        "builtin"
+    ],
+    "diagnostics.disable": [
+        "undefined-global"
     ]
 }

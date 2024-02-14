@@ -9,8 +9,4 @@ return {
 	highlight = { enable = true },
 	indent = { enable = true },
 	"mrjones2014/nvim-ts-rainbow",
-	config = function()
-		local builtin = require("treesitter-builtin")
-	end
-
-}
+	}

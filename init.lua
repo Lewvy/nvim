@@ -2,7 +2,7 @@ require("custom.remap")
 vim.cmd("set termguicolors")
 vim.cmd("set tabstop=4")
 vim.cmd("set shiftwidth=4")
-vim.cmd("set relativenumber")
+vim.cmd("set number relativenumber")
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({

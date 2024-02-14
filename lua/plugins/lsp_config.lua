@@ -7,11 +7,13 @@ return {
 	},
 	{
 		"williamboman/mason-lspconfig.nvim",
+		lazy = false,
+		opts = { auto_install = true, },
 		config = function()
 			require("mason-lspconfig").setup(
-			{
-				ensure_installed = {"lua_ls","clangd", "bashls","jdtls", "pyright" }
-			}
+				{
+					ensure_installed = { "lua_ls", "clangd", "bashls", "jdtls", "pyright" }
+				}
 			)
 		end
 	},
@@ -23,8 +25,9 @@ return {
 			lspconfig.clangd.setup({})
 			lspconfig.jdtls.setup({})
 			lspconfig.pyright.setup({})
-			vim.keymap.set('n', 'K',vim.lsp.buf.hover, {})
-			vim.keymap.set('n','<leader>nl', vim.lsp.buf.definition, {})
+			vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
+			vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, {}) 
+			vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
 			vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {})
 		end
 	},
