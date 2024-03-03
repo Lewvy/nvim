@@ -1,11 +1,13 @@
 {
   "DAPInstall.nvim": { "branch": "main", "commit": "bbda2b062e5519cde4e10b6e4240d3dd1f867b20" },
   "LuaSnip": { "branch": "master", "commit": "f3b3d3446bcbfa62d638b1903ff00a78b2b730a1" },
+  "StyLua": { "branch": "main", "commit": "049bb7c2c5ff0f764eec8ab3627e114ff23ddabf" },
   "catppuccin": { "branch": "main", "commit": "9703f227bfab20d04bcee62d2f08f1795723b4ae" },
   "cmp-nvim-lsp": { "branch": "main", "commit": "5af77f54de1b16c34b23cba810150689a3a90312" },
   "cmp_luasnip": { "branch": "master", "commit": "05a9ab28b53f71d1aece421ef32fee2cb857a843" },
   "friendly-snippets": { "branch": "main", "commit": "dbd45e9ba76d535e4cba88afa1b7aa43bb765336" },
   "harpoon": { "branch": "master", "commit": "ccae1b9bec717ae284906b0bf83d720e59d12b91" },
+  "indent-blankline.nvim": { "branch": "master", "commit": "821a7acd88587d966f7e464b0b3031dfe7f5680c" },
   "lazy.nvim": { "branch": "main", "commit": "aedcd79811d491b60d0a6577a9c1701063c2a609" },
   "mason-lspconfig.nvim": { "branch": "main", "commit": "fe4cce44dec93c69be17dad79b21de867dde118a" },
   "mason-nvim-dap.nvim": { "branch": "main", "commit": "3614a39aae98ccd34124b072939d6283853b3dd2" },
@@ -29,6 +31,7 @@
   "nvim-web-devicons": { "branch": "master", "commit": "7f30f2da3c3641841ceb0e2c150281f624445e8f" },
   "playground": { "branch": "master", "commit": "ba48c6a62a280eefb7c85725b0915e021a1a0749" },
   "plenary.nvim": { "branch": "master", "commit": "4f71c0c4a196ceb656c824a70792f3df3ce6bb6d" },
+  "stylua-nvim": { "branch": "main", "commit": "ce59a353f02938cba3e0285e662fcd3901cd270f" },
   "telescope-ui-select.nvim": { "branch": "master", "commit": "6e51d7da30bd139a6950adf2a47fda6df9fa06d2" },
   "telescope.nvim": { "branch": "master", "commit": "d90956833d7c27e73c621a61f20b29fdb7122709" },
   "undotree": { "branch": "master", "commit": "9dbbf3b7d19dda0d22ceca461818e4739ad8154d" }
