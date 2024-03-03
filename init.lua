@@ -4,7 +4,7 @@ vim.cmd("set termguicolors")
 vim.cmd("set tabstop=4")
 vim.cmd("set shiftwidth=4")
 vim.cmd("set number relativenumber")
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev,{})
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, {})
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {})
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, {})
 
@@ -29,4 +29,4 @@ require("catppuccin").setup({
 	transparent_background = true
 })
 
-vim.cmd.colorscheme ("catppuccin")
+vim.cmd.colorscheme("catppuccin")
