@@ -14,9 +14,23 @@ return {
 			local mason = require("mason")
 			local mason_lspconfig = require("mason-lspconfig")
 			local mason_tool_installer = require("mason-tool-installer")
-			local cmp_nvim_lsp = require("cmp_nvim_lsp")
+			local notify = vim.notify
+			vim.notify = function(msg, ...)
+				if msg:match("warning: multiple different client offset_encodings") then
+					return
+				end
+				notify(msg, ...)
+			end
 
-			-- Autocommand setup
+			local cmp_nvim_lsp = require("cmp_nvim_lsp")
+			require("lspconfig").clangd.setup({
+				on_attach = on_attach,
+				capabilities = cmp_nvim_lsp.default_capabilities(),
+				cmd = {
+					"clangd",
+					"--offset-encoding=utf-16",
+				},
+			}) -- Autocommand setup
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 				callback = function(event)
@@ -69,7 +83,6 @@ return {
 				},
 			}
 
-			-- Mason setup
 			mason.setup()
 
 			-- Ensure servers and formatters are installed
