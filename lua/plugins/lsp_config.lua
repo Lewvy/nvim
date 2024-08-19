@@ -107,19 +107,21 @@ return {
 		"stevearc/conform.nvim",
 		lazy = false,
 		keys = {
-			{
-				"<leader>f",
-				function()
-					require("conform").format({ async = true, lsp_fallback = true })
-				end,
-				mode = "",
-				desc = "[F]ormat buffer",
-			},
+			vim.keymap.set("", "<leader>f", function()
+				require("conform").format({ async = true }, function(err)
+					if not err then
+						local mode = vim.api.nvim_get_mode().mode
+						if vim.startswith(string.lower(mode), "v") then
+							vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+						end
+					end
+				end)
+			end, { desc = "Format code" }),
 		},
 		opts = {
 			notify_on_error = false,
 			format_on_save = function(bufnr)
-				local disable_filetypes = { c = true, cpp = true }
+				local disable_filetypes = { java = true, c = false, cpp = false }
 				return {
 					timeout_ms = 500,
 					lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
@@ -127,8 +129,8 @@ return {
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				c = { "clang-format" },
 				go = { "gofumpt" },
+				javascript = { "prettierd" },
 			},
 		},
 	},

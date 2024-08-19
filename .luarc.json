@@ -1,0 +1,9 @@
+{
+    "diagnostics.globals": [
+        "clangd",
+        "on_attach"
+    ],
+    "diagnostics.disable": [
+        "duplicate-set-field"
+    ]
+}
