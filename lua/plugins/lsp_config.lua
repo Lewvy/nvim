@@ -4,12 +4,12 @@ return {
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
+			"simrat39/rust-tools.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 			{ "j-hui/fidget.nvim", opts = {} },
 			{ "folke/neodev.nvim", opts = {} },
 		},
 		config = function()
-			-- Safe loading of modules
 			local lspconfig = require("lspconfig")
 			local mason = require("mason")
 			local mason_lspconfig = require("mason-lspconfig")
