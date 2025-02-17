@@ -14,6 +14,9 @@ return {
 			local mason = require("mason")
 			local mason_lspconfig = require("mason-lspconfig")
 			local mason_tool_installer = require("mason-tool-installer")
+			local cmp_nvim_lsp = require("cmp_nvim_lsp")
+
+			-- Suppress a specific warning message.
 			local notify = vim.notify
 			vim.notify = function(msg, ...)
 				if msg:match("warning: multiple different client offset_encodings") then
@@ -22,20 +25,21 @@ return {
 				notify(msg, ...)
 			end
 
-			local cmp_nvim_lsp = require("cmp_nvim_lsp")
-			require("lspconfig").clangd.setup({
-				on_attach = on_attach,
-				capabilities = cmp_nvim_lsp.default_capabilities(),
-				cmd = {
-					"clangd",
-					"--offset-encoding=utf-16",
+			-- Setup gopls (Go) with placeholders disabled.
+			lspconfig.gopls.setup({
+				settings = {
+					gopls = {
+						usePlaceholders = false,
+					},
 				},
-			}) -- Autocommand setup
-			vim.api.nvim_create_autocmd("LspAttach", {
-				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
-				callback = function(event)
+				capabilities = cmp_nvim_lsp.default_capabilities(),
+			})
+
+			-- Setup clangd with UTF-16 offset encoding.
+			lspconfig.clangd.setup({
+				on_attach = function(client, bufnr)
 					local map = function(keys, func, desc)
-						vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+						vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
 					end
 
 					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
@@ -53,22 +57,30 @@ return {
 					map("K", vim.lsp.buf.hover, "Hover Documentation")
 					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
-					local client = vim.lsp.get_client_by_id(event.data.client_id)
-					if client and client.server_capabilities.documentHighlightProvider then
+					if client.server_capabilities.documentHighlightProvider then
 						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-							buffer = event.buf,
+							buffer = bufnr,
 							callback = vim.lsp.buf.document_highlight,
 						})
-
 						vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-							buffer = event.buf,
+							buffer = bufnr,
 							callback = vim.lsp.buf.clear_references,
 						})
 					end
 				end,
+				capabilities = cmp_nvim_lsp.default_capabilities(),
+				cmd = { "clangd", "--offset-encoding=utf-16" },
 			})
 
-			-- LSP capabilities and server setup
+			-- (Optional) Global on_attach autocommand.
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
+				callback = function(event)
+					-- You can add additional on_attach actions here if needed.
+				end,
+			})
+
+			-- Additional LSP server setup.
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, cmp_nvim_lsp.default_capabilities())
 			local servers = {
@@ -85,12 +97,11 @@ return {
 
 			mason.setup()
 
-			-- Ensure servers and formatters are installed
+			-- Ensure certain servers/formatters are installed.
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, { "stylua" })
 			mason_tool_installer.setup({ ensure_installed = ensure_installed })
 
-			-- Mason LSPconfig setup
 			mason_lspconfig.setup({
 				handlers = {
 					function(server_name)
