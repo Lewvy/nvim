@@ -107,7 +107,7 @@ return {
 		end, { desc = "Git Copy link to clipboard" })
 
 		-- Keybind: Browse commits
-		vim.keymap.set("n", "<leader>gc", function()
+		vim.keymap.set("n", "<leader>ggp", function()
 			local commits = vim.fn.systemlist("git log --oneline --no-decorate -n 50 --format='%h %s'")
 			create_git_picker(commits, "Select Commit", function(commit)
 				local hash = vim.split(commit, " ")[1]

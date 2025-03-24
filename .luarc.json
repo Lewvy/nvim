@@ -1,7 +1,8 @@
 {
     "diagnostics.globals": [
         "clangd",
-        "on_attach"
+        "on_attach",
+        "find_python"
     ],
     "diagnostics.disable": [
         "duplicate-set-field"

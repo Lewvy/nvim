@@ -1,11 +1,71 @@
 return {
+
 	"ThePrimeagen/refactoring.nvim",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-treesitter/nvim-treesitter",
 	},
+	lazy = true,
+	keys = {
+		{
+			"<leader>re",
+			mode = "x",
+			function()
+				vim.cmd(":Refactor extract ")
+			end,
+			desc = "Extract selection",
+		},
+		{
+			"<leader>rf",
+			mode = "x",
+			function()
+				vim.cmd(":Refactor extract_to_file ")
+			end,
+			desc = "Extract to file",
+		},
+		{
+			"<leader>rv",
+			mode = "x",
+			function()
+				vim.cmd(":Refactor extract_var ")
+			end,
+			desc = "Extract variable",
+		},
+		{
+			"<leader>ri",
+			mode = { "n", "x" },
+			function()
+				vim.cmd(":Refactor inline_var")
+			end,
+			desc = "Inline variable",
+		},
+		{
+			"<leader>rI",
+			mode = "n",
+			function()
+				vim.cmd(":Refactor inline_func")
+			end,
+			desc = "Inline function",
+		},
+		{
+			"<leader>rb",
+			mode = "n",
+			function()
+				vim.cmd(":Refactor extract_block")
+			end,
+			desc = "Extract block",
+		},
+		{
+			"<leader>rbf",
+			mode = "n",
+			function()
+				vim.cmd(":Refactor extract_block_to_file")
+			end,
+			desc = "Extract block to file",
+		},
+	},
 	config = function()
-		require('refactoring').setup({
+		require("refactoring").setup({
 			prompt_func_return_type = {
 				go = true,
 				java = true,
@@ -31,16 +91,5 @@ return {
 			show_success_message = true, -- shows a message with information about the refactor on success
 			-- i.e. [Refactor] Inlined 3 variable occurrences
 		})
-		vim.keymap.set("x", "<leader>re", ":Refactor extract ")
-		vim.keymap.set("x", "<leader>rf", ":Refactor extract_to_file ")
-
-		vim.keymap.set("x", "<leader>rv", ":Refactor extract_var ")
-
-		vim.keymap.set({ "n", "x" }, "<leader>ri", ":Refactor inline_var")
-
-		vim.keymap.set("n", "<leader>rI", ":Refactor inline_func")
-
-		vim.keymap.set("n", "<leader>rb", ":Refactor extract_block")
-		vim.keymap.set("n", "<leader>rbf", ":Refactor extract_block_to_file")
 	end,
 }

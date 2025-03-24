@@ -9,7 +9,6 @@ return {
 		end,
 	},
 
-	-- LSP Configuration (Simplified)
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -61,7 +60,6 @@ return {
 					vim.keymap.set("n", keys, mapping[1], { buffer = bufnr, desc = "LSP: " .. mapping[2] })
 				end
 
-				-- Document Highlight
 				if client.server_capabilities.documentHighlightProvider then
 					vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 						buffer = bufnr,
@@ -80,7 +78,9 @@ return {
 				gopls = { settings = { gopls = { usePlaceholders = false } } },
 				clangd = { cmd = { "clangd", "--offset-encoding=utf-16" } },
 				lua_ls = { settings = { Lua = { completion = { callSnippet = "Replace" } } } },
+
 				pyright = {}, -- Basic pyright config
+
 				-- Add other servers here, but keep them simple
 			}
 
@@ -135,11 +135,18 @@ return {
 	-- Debugging with nvim-dap
 	{
 		"mfussenegger/nvim-dap",
-		dependencies = { "nvim-dap-lldb", "nvim-neotest/nvim-nio" },
+		dependencies = {
+			"nvim-dap-lldb",
+			"nvim-neotest/nvim-nio",
+			"leoluz/nvim-dap-go",
+			"mfussenegger/nvim-dap-python",
+		},
+		lazy = true,
+		event = { "BufReadPost" }, -- Load after opening a file
 		config = function()
 			local dap = require("dap")
 			local dapui = require("dapui")
-
+			require("dap-go").setup()
 			-- Setup DAP UI
 			dapui.setup()
 
@@ -165,6 +172,21 @@ return {
 				require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
 			end, { desc = "Conditional Breakpoint" })
 			keymap("n", "<Leader>dr", require("dap").repl.open, { desc = "Open Debug Console" })
+			dap.configurations.python = {
+				{
+					type = "python",
+					request = "launch",
+					name = "Launch file",
+					program = "${file}",
+					console = "integratedTerminal",
+					justMyCode = false,
+					stopOnEntry = false,
+					-- Add this line to specify the debug adapter:
+					-- More information about the adapter:
+					-- https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings
+					pythonPath = "/usr/bin/python3", --REPLACE WITH YOUR PATH
+				},
+			}
 		end,
 	},
 
@@ -172,6 +194,8 @@ return {
 	{
 		"julianolf/nvim-dap-lldb",
 		dependencies = { "mfussenegger/nvim-dap" },
+		lazy = true,
+		event = { "BufReadPost" }, -- Load after opening a file
 		config = function()
 			require("dap-lldb").setup({
 				configurations = {
@@ -227,6 +251,8 @@ return {
 	{
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "mfussenegger/nvim-dap" },
+		lazy = true,
+		event = { "BufReadPost" }, -- Load after opening a file
 		config = function()
 			local dapui = require("dapui")
 			dapui.setup()
@@ -236,21 +262,26 @@ return {
 	-- Neotest NIO (if you use Neotest)
 	{
 		"nvim-neotest/nvim-nio",
+		lazy = true,
+		event = { "BufReadPost" }, -- Load after opening a file
 	},
 	-- Add nvim-dap-go
 	{
-		"mfussenegger/nvim-dap",
-		dependencies = { "leoluz/nvim-dap-go" },
+		"leoluz/nvim-dap-go",
+		dependencies = "mfussenegger/nvim-dap",
+		lazy = true,
+		event = { "BufReadPost" },
 		config = function()
 			require("dap-go").setup()
 		end,
 	},
-
+	-- Python Debug Adapter
 	{
-		"leoluz/nvim-dap-go",
-		dependencies = "mfussenegger/nvim-dap",
+		"mfussenegger/nvim-dap-python",
+		lazy = true,
 		config = function()
-			require("dap-go").setup()
+			-- Make sure you have python installed: https://www.python.org/downloads/
+			require("dap-python").setup("/usr/bin/python3") --REPLACE WITH YOUR PATH
 		end,
 	},
 }

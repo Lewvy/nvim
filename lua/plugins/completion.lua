@@ -10,6 +10,9 @@ return {
 		},
 	},
 	{
+		"github/copilot.vim",
+	},
+	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
 			"onsails/lspkind-nvim", -- Added dependency for lspkind
