@@ -1,4 +1,5 @@
 vim.g.mapleader = " "
+vim.keymap.set("n", "<leader>er", vim.diagnostic.open_float)
 vim.keymap.set("n", "<C-Y>", [[mavG$y`a]])
 vim.keymap.set("n", "<leader>ay", [[mavgg0y`a]])
 vim.keymap.set("n", "<leader>cl", vim.cmd.noh)
@@ -20,4 +21,4 @@ vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { desc = "Goto Declaration" }
 vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Goto Implementation" })
 vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Goto References" })
 vim.api.nvim_set_keymap("i", "<C-e>", "if err != nil {\n\treturn err\n}", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>e", "oif err != nil {<CR>return err<CR>}<Esc>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>ee", "oif err != nil {<CR>return err<CR>}<Esc>", { noremap = true, silent = true })

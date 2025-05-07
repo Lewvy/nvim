@@ -9,9 +9,9 @@ return {
 			"rafamadriz/friendly-snippets",
 		},
 	},
-	{
-		"github/copilot.vim",
-	},
+	-- {
+	-- 	"github/copilot.vim",
+	-- },
 	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {

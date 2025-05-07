@@ -45,6 +45,14 @@ return {
 
 			local capabilities = cmp_nvim_lsp.default_capabilities()
 
+			-- Monkey patch vim.lsp.util.make_position_params
+			local make_position_params = vim.lsp.util.make_position_params
+			vim.lsp.util.make_position_params = function(bufnr, pos, params)
+				params = params or {}
+				params.position_encoding = "utf-8" -- Add position_encoding here
+				return make_position_params(bufnr, pos, params)
+			end
+
 			local function on_attach(client, bufnr)
 				-- Keymaps for LSP
 				local keymap = {
@@ -74,32 +82,41 @@ return {
 				end
 			end
 
+			-- Explicitly setup gopls with basic configuration
+			lspconfig.gopls.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+				settings = {
+					gopls = {
+						usePlaceholders = true,
+					},
+				},
+			})
+
 			local servers = {
-				gopls = { settings = { gopls = { usePlaceholders = false } } },
 				clangd = { cmd = { "clangd", "--offset-encoding=utf-16" } },
 				lua_ls = { settings = { Lua = { completion = { callSnippet = "Replace" } } } },
-
-				pyright = {}, -- Basic pyright config
-
-				-- Add other servers here, but keep them simple
+				pyright = {},
 			}
 
 			-- Ensure tools are installed with mason-tool-installer
-			local tools_to_ensure = vim.tbl_keys(servers) -- Ensure mason-tool-installer installs these
+			local tools_to_ensure = vim.tbl_keys(servers)
 
 			mason_tool_installer.setup({ ensure_installed = tools_to_ensure })
 
 			-- Use mason-lspconfig to configure all servers
 			mason_lspconfig.setup({
-				ensure_installed = tools_to_ensure, -- Ensure the servers are installed
+				ensure_installed = tools_to_ensure,
 				automatic_installation = true,
 				handlers = {
 					function(server_name)
-						lspconfig[server_name].setup({
-							capabilities = capabilities,
-							on_attach = on_attach,
-							settings = servers[server_name] and servers[server_name].settings or {}, -- Apply server-specific settings
-						})
+						if server_name ~= "gopls" then
+							lspconfig[server_name].setup({
+								capabilities = capabilities,
+								on_attach = on_attach,
+								settings = servers[server_name] and servers[server_name].settings or {},
+							})
+						end
 					end,
 				},
 			})
